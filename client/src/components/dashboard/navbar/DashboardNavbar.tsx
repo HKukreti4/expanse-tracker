@@ -1,0 +1,23 @@
+import DarkModeToggle from "../../buttons/DarkModeToggle";
+
+function DashboardNavbar() {
+  return (
+    <div className="dark:bg-gray-800/50 text-black dark:text-white sticky top-0 border-b border-black/10">
+      <div className="navbar flex justify-between items-center px-8 py-3">
+        <div className="search ">
+          <input
+            type="text"
+            placeholder="Search ..."
+            className="border-[2px] border-primary-400 bg-gray-200/20 outline-0 px-4 py-1 rounded-md"
+          />
+        </div>
+        <div className="ioncs flex gap-2">
+          <DarkModeToggle />
+          <div className="circle w-10 h-10 rounded-full bg-red-50"></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default DashboardNavbar;
