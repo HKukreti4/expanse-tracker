@@ -13,6 +13,7 @@ import DashboardLayout from "./layouts/DashboardLayout";
 import Home from "./screens/Home";
 import About from "./screens/About";
 import DashboardHome from "./screens/DashboardHome";
+import Auth from "./screens/Auth";
 
 export {
   FeatureSection,
@@ -24,4 +25,5 @@ export {
   About,
   DashboardHome,
   DashboardLayout,
+  Auth,
 };

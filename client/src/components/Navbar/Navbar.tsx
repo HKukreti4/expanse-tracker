@@ -1,7 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import Button from "../buttons/Button";
 import Container from "../Containers/Container";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   return (
     <Container>
       <div className="flex justify-between bg-secondary-500/50 mt-1 rounded-2xl p-3 items-center backdrop-blur-3xl">
@@ -13,7 +15,12 @@ const Navbar = () => {
             <li>Home</li>
             <li>About</li>
           </ul>
-          <Button className="bg-primary-500 rounded-full">Login</Button>
+          <Button
+            className="bg-primary-500 rounded-full cursor-pointer"
+            onClick={() => navigate("/login")}
+          >
+            Login
+          </Button>
         </div>
       </div>
     </Container>

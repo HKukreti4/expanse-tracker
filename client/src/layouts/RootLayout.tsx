@@ -9,9 +9,9 @@ const RootLayout = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(setDefaultTheme());
-  }, []);
+  }, [dispatch]);
   return (
-    <div className="dark:bg-yellow-500 bg-white">
+    <div className="dark:bg-black/10">
       <header>
         <Navbar />
       </header>

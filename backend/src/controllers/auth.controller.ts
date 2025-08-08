@@ -4,7 +4,7 @@ import { User } from "../models/userModel";
 import { checkPass } from "../utils/passwordCompare";
 import errorHandler from "../utils/errorHandler";
 import jwt, { SignOptions } from "jsonwebtoken";
-
+import type { StringValue } from "ms";
 export const loginUser = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
@@ -33,7 +33,7 @@ export const loginUser = asyncHandler(
         )
       );
     }
-    const expiry = process.env.JWT_EXPIRY ?? "1d";
+    const expiry = (process.env.JWT_EXPIRY as StringValue) ?? "1d";
     const options: SignOptions = {
       expiresIn: expiry,
     };
@@ -75,8 +75,54 @@ export const registeruser = asyncHandler(
     if (!newuser) {
       return next(new errorHandler("Failed to create the new user", 401));
     }
-    res
-      .status(200)
-      .send({ message: "Succesfully created the user", user: newuser });
+    res.status(200).send({
+      message: "Succesfully created the user",
+      user: { name: newuser.name, email: newuser.email, id: newuser._id },
+    });
+  }
+);
+
+interface customReq extends Request {
+  user: {
+    email: string;
+    id: string;
+  };
+  token: string;
+}
+export const verifyUser = asyncHandler(
+  async (req: customReq, res: Response, next: NextFunction) => {
+    const { email, id } = req.user;
+    let token = req.token;
+    const user = await User.findOne({ $or: [{ email: email }, { _id: id }] });
+    if (!user) {
+      return next(new errorHandler("Email or password does not exist", 404));
+    }
+    const payload = {
+      id: user._id,
+      email: user.email,
+    };
+    if (!token) {
+      const secret = process.env.SECRET_KEY || "1d";
+      if (!secret) {
+        next(
+          new errorHandler(
+            "SECRET_KEY is not defined in environment variables",
+            404
+          )
+        );
+      }
+      const expiry = (process.env.JWT_EXPIRY as StringValue) ?? "1d";
+      const options: SignOptions = {
+        expiresIn: expiry,
+      };
+
+      token = jwt.sign(payload, secret, options);
+    }
+
+    res.status(200).json({
+      message: "Successful login",
+      user: { id: user._id, email: user.email },
+      token,
+    });
   }
 );

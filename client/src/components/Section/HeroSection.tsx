@@ -3,7 +3,7 @@ import Container from "../Containers/Container";
 const HeroSection = () => {
   return (
     <Container>
-      <div className="hero  dark:bg-secondary-500 h-[80vh] mt-2 rounded-2xl flex justify-center items-center relative overflow-hidden">
+      <div className="hero  bg-secondary-500 h-[80vh] mt-2 rounded-2xl flex justify-center items-center relative overflow-hidden">
         <div className="blur-icon absolute top-0 left-0 w-60 h-60 bg-gradient-to-b from-primary-400/70 to-blue-950 blur-3xl rounded-full -z-1"></div>
         <div className="blur-icon absolute -bottom-10 -right-10 w-60 h-60 bg-gradient-to-b from-primary-400/70 to-blue-950 blur-3xl rounded-full -z-1"></div>
         <div className="flex flex-col items-center gap-4 text-center">

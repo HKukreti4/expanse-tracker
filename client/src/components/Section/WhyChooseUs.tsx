@@ -54,9 +54,7 @@ const WhyChooseUs = () => {
               </li>
             </ul>
           </div>
-          <div>
-            <img src="" alt="" />
-          </div>
+          <div>{/* <img src="" alt="" /> */}</div>
         </div>
       </section>
     </Container>
