@@ -12,7 +12,7 @@ import DashboardLayout from "./layouts/DashboardLayout";
 // pages
 import Home from "./screens/Home";
 import About from "./screens/About";
-import DashboardHome from "./screens/DashboardHome";
+import DashboardHome from "./screens/dashboard/DashboardHome";
 import Auth from "./screens/Auth";
 
 export {

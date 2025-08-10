@@ -14,7 +14,7 @@ export const loginUser = asyncHandler(
       return next(new errorHandler("Email or password does not exist", 404));
     }
 
-    const result = checkPass(password, user.password);
+    const result = await checkPass(password, user.password);
     if (!result) {
       return next(new errorHandler("User or password is incorrect", 401));
     }
@@ -42,7 +42,7 @@ export const loginUser = asyncHandler(
 
     res.status(200).json({
       message: "Successful login",
-      user: { id: user._id, email: user.email },
+      user: { id: user._id, email: user.email, name: user.name },
       token,
     });
   }
@@ -75,9 +75,31 @@ export const registeruser = asyncHandler(
     if (!newuser) {
       return next(new errorHandler("Failed to create the new user", 401));
     }
+
+    const payload = {
+      id: newuser._id,
+      email: newuser.email,
+    };
+    const secret = process.env.SECRET_KEY || "1d";
+    if (!secret) {
+      next(
+        new errorHandler(
+          "SECRET_KEY is not defined in environment variables",
+          404
+        )
+      );
+    }
+    const expiry = (process.env.JWT_EXPIRY as StringValue) ?? "1d";
+    const options: SignOptions = {
+      expiresIn: expiry,
+    };
+
+    const token = jwt.sign(payload, secret, options);
+
     res.status(200).send({
       message: "Succesfully created the user",
       user: { name: newuser.name, email: newuser.email, id: newuser._id },
+      token: token,
     });
   }
 );
@@ -85,13 +107,15 @@ export const registeruser = asyncHandler(
 interface customReq extends Request {
   user: {
     email: string;
-    id: string;
+    _id: string;
+    role: "admin" | "user";
   };
   token: string;
 }
 export const verifyUser = asyncHandler(
   async (req: customReq, res: Response, next: NextFunction) => {
-    const { email, id } = req.user;
+    const { email } = req.user;
+    const id = req.user._id;
     let token = req.token;
     const user = await User.findOne({ $or: [{ email: email }, { _id: id }] });
     if (!user) {
@@ -121,7 +145,12 @@ export const verifyUser = asyncHandler(
 
     res.status(200).json({
       message: "Successful login",
-      user: { id: user._id, email: user.email },
+      user: {
+        id: user._id,
+        email: user.email,
+        role: user.role,
+        name: user.name,
+      },
       token,
     });
   }

@@ -6,6 +6,8 @@ export interface User {
   id: string;
   name: string;
   email: string;
+  token?: string;
+  role?: "admin" | "user";
 
   // Add more fields if your API returns them
 }
@@ -34,7 +36,15 @@ const initialState: AuthState = {
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    logoutUser: (state) => {
+      state.isAuthenticated = false;
+      sessionStorage.clear();
+      state.user = null;
+      state.buttonLoading = false;
+      state.errmsg = "";
+    },
+  },
   extraReducers: (builder) => {
     //register thunk
     builder.addCase(registerUserThunk.pending, (state) => {
@@ -92,5 +102,5 @@ const authSlice = createSlice({
   },
 });
 
-// export const {} = authSlice.actions;
+export const { logoutUser } = authSlice.actions;
 export default authSlice.reducer;

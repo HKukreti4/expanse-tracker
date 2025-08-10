@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import errorHandler from "../utils/errorHandler";
 import asyncHandler from "../utils/asyncHandler";
+import { User } from "../models/userModel";
 
 interface AuthRequest extends Request {
   user?: string | JwtPayload;
@@ -9,7 +10,7 @@ interface AuthRequest extends Request {
 }
 
 const verifyToken = asyncHandler(
-  (req: AuthRequest, res: Response, next: NextFunction) => {
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.toLowerCase().startsWith("bearer ")) {
@@ -27,8 +28,19 @@ const verifyToken = asyncHandler(
     }
 
     try {
-      const decoded = jwt.verify(token, secret);
-      req.user = decoded;
+      const decoded = jwt.verify(token, secret) as {
+        id: string;
+        email: string;
+        iat?: number;
+        exp?: number;
+      };
+
+      const userId = decoded.id;
+      const user = await User.find({ _id: userId });
+      if (!user) {
+        next(new errorHandler("user not exist", 401));
+      }
+      req.user = user[0];
       req.token = token;
       next();
     } catch (err) {

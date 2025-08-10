@@ -11,7 +11,7 @@ const RootLayout = () => {
     dispatch(setDefaultTheme());
   }, [dispatch]);
   return (
-    <div className="dark:bg-black/10">
+    <div className="dark:bg-black/10 bg-white-400">
       <header>
         <Navbar />
       </header>

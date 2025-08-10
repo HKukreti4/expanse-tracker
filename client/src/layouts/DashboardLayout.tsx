@@ -21,14 +21,13 @@ const DashboardLayout = () => {
     const verifyUser = async () => {
       try {
         if (user) {
-          const result = await dispatch(getUserThunk(user)).unwrap();
-          if (result) {
-            return;
-          }
+          await dispatch(getUserThunk(user)).unwrap();
         } else {
+          // If no user in Redux, redirect
           navigate("/login");
         }
       } catch (error) {
+        // If token invalid or verification failed, redirect to login
         console.log(error);
         navigate("/login");
       } finally {
@@ -48,7 +47,7 @@ const DashboardLayout = () => {
   }
 
   return (
-    <div className="flex dark:bg-black bg-white dark:text-white text-black">
+    <div className="flex dark:bg-black bg-white-400 dark:text-white text-black">
       {/* Sidebar */}
       <div
         className={`left w-62 lg:w-62 fixed ${

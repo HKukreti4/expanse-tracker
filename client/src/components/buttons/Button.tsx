@@ -17,7 +17,7 @@ const Button = ({
   return (
     <button
       type={type}
-      className={`${className} bg-primary-500 text-white px-4 py-2`}
+      className={`${className} bg-primary-500   `}
       {...props}
       onClick={onClick}
     >

@@ -17,6 +17,7 @@ interface User {
   id: string;
   name: string;
   email: string;
+  role: "admin" | "user";
 }
 interface getInfoData {
   email: string;
@@ -44,7 +45,8 @@ export const registerUserThunk = createAsyncThunk<
       "/auth/register",
       userData
     );
-    return result.data.user;
+    const payload = { ...result.data.user, token: result.data.token };
+    return payload;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const msg = error?.response?.data?.message;
