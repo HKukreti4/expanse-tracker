@@ -50,9 +50,9 @@ const LiwithSubmenu = ({
               className={({ isActive }) =>
                 `${
                   isActive
-                    ? "dark:bg-black bg-gray-100 "
-                    : "dark:bg-gray-800/50 "
-                }   w-full rounded-xl   py-2 capitalize ps-12 flex items-center gap-2 dark:hover:bg-secondary-800 hover:bg-gray-100`
+                    ? "dark:bg-black bg-white  dark:border-1 dark:border-primary-500 text-primary-400 font-bold"
+                    : "dark:bg-gray-800/50"
+                }  w-full   py-2 capitalize  rounded-xl ps-12 flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-secondary-800`
               }
               onClick={() => dispatch(closeDashboard())}
             >

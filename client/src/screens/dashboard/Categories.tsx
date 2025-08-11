@@ -36,7 +36,7 @@ const Categories = () => {
         </Button>
       </div>
       {showform ? <AddCategoryForm setshowForm={setshowForm} /> : null}
-      <div className="categorycard grid grid-cols-2 md:grid:cols-2 lg:grid-cols-4 mt-4 gap-5">
+      <div className="categorycard grid grid-cols-2 md:grid:cols-2 lg:grid-cols-4 my-4 gap-5">
         {categories.length > 0 && categories ? (
           categories.map((item) => {
             return (
@@ -45,14 +45,14 @@ const Categories = () => {
                 className="category2  flex-fill flex gap-2 md:gap-5 flex-col md:flex-row md:items-center dark:bg-secondary-800 bg-white/60 rounded-md  px-2 py-4 md:py-8 shadow-md"
               >
                 <div className="flex flex-col  ">
-                  <h3 className="text-xl md:text-3xl text-center flex flex-col md:flex-row gap-3 items-center md:items-start md:text-start capitalize">
+                  <h3 className="text-xl line-clamp-1 md:text-3xl text-center flex flex-col md:flex-row gap-3 items-center md:items-start md:text-start capitalize">
                     <div className="text-xl md:text-xl p-2  flex dark:bg-secondary-500 bg-primary-500 text-white dark:text-primary-500 md:justify-center md:items-center rounded-full">
                       {(() => {
                         const IconComp = getIconByName(item.icon);
                         return IconComp ? <IconComp /> : null;
                       })()}
                     </div>
-                    {item.category_name}
+                    <p className="line-clamp-1">{item.category_name}</p>
                   </h3>
                   {item.userId == userId ? (
                     <div className="mt-4 flex gap-2 ">

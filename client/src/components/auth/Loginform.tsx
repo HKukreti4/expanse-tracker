@@ -79,7 +79,7 @@ const Loginform = () => {
             className="border-[1px] dark:border-white/20 border-black/10 bg-white dark:bg-transparent focus:border-primary-400 outline-none px-4 py-2 rounded-md"
           />
         </div>
-        <Button type="submit" className="bg-primary-500 rounded-md">
+        <Button type="submit" className="bg-primary-500 rounded-md py-2">
           Login
         </Button>
       </form>

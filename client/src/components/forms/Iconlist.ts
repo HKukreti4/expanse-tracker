@@ -1,4 +1,4 @@
-import { GiMeal } from "react-icons/gi";
+import { GiMeal, GiFruitBowl, GiPotato } from "react-icons/gi";
 import {
   FaShoppingBasket,
   FaPlane,
@@ -13,6 +13,7 @@ import {
   FaGift,
   FaEllipsisH,
   FaCar,
+  FaRupeeSign,
 } from "react-icons/fa";
 import { MdOutlineReceiptLong, MdMovie } from "react-icons/md";
 import type { IconType } from "react-icons";
@@ -43,5 +44,30 @@ export const iconOptions: IconOption[] = [
   { label: "Investments", value: "FaChartLine", icon: FaChartLine },
   { label: "Gifts & Donations", value: "FaGift", icon: FaGift },
   { label: "Car", value: "FaCar", icon: FaCar },
+  { label: "Fruits", value: "GiFruitBowl", icon: GiFruitBowl },
+  { label: "Vegetables", value: "GiPotato", icon: GiPotato },
+  { label: "Money", value: "FaRupeeSign", icon: FaRupeeSign },
   { label: "Miscellaneous", value: "FaEllipsisH", icon: FaEllipsisH },
 ];
+
+export const iconsMap: Record<string, IconType> = {
+  FaShoppingBasket,
+  FaPlane,
+  FaGasPump,
+  FaShoppingBag,
+  FaHospital,
+  FaBookOpen,
+  FaHome,
+  FaPiggyBank,
+  FaMoneyBillWave,
+  FaChartLine,
+  FaGift,
+  FaEllipsisH,
+  FaCar,
+  GiMeal,
+  GiFruitBowl,
+  GiPotato,
+  MdOutlineReceiptLong,
+  MdMovie,
+  FaRupeeSign,
+};

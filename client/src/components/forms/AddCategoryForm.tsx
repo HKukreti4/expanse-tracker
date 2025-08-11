@@ -108,7 +108,7 @@ const AddCategoryForm = ({ setshowForm }: formprops) => {
             <label htmlFor="icons" className="mb-4">
               Select Icon
             </label>
-            <div className="grid md:grid-cols-8 grid-cols-6 gap-4 h-20 overflow-y-auto">
+            <div className="grid md:grid-cols-8 grid-cols-6 gap-4 h-20  md:h-auto overflow-y-auto">
               {iconOptions.map((item) => {
                 const Icon = item.icon;
                 return (
@@ -118,13 +118,13 @@ const AddCategoryForm = ({ setshowForm }: formprops) => {
                     onClick={() => setSelectedIcon(item.value)}
                   >
                     <div
-                      className={`p-2 border rounded flex items-center justify-center cursor-pointer ${
+                      className={`text-black/50  text-2xl rounded flex items-center justify-center cursor-pointer ${
                         selectedIcon === item.value
-                          ? "border-primary-500 text-primary-500"
-                          : ""
+                          ? "text-primary-500 "
+                          : " dark:text-white"
                       }`}
                     >
-                      <Icon size={14} />
+                      <Icon />
                     </div>
                   </div>
                 );

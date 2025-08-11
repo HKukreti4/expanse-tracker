@@ -6,6 +6,7 @@ export interface ITransaction extends Document {
   amount: number;
   category: Types.ObjectId;
   date: Date;
+  note: string;
   userId: Types.ObjectId;
 }
 
@@ -15,6 +16,10 @@ const TransactionSchema = new Schema<ITransaction>(
     amount: { type: Number, required: true },
     category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
     date: { type: Date, required: true },
+    note: {
+      type: String,
+      default: "Added new transaction",
+    },
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
   },
   { timestamps: true }

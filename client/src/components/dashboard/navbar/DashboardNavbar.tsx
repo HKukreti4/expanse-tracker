@@ -2,9 +2,12 @@ import { MdMenu } from "react-icons/md";
 import DarkModeToggle from "../../buttons/DarkModeToggle";
 import { useDispatch } from "react-redux";
 import { openDashboard } from "../../../redux/slices/dashboardSlice";
+import { useAppSelector } from "../../../hooks/hooks";
 
 function DashboardNavbar() {
   const dispatch = useDispatch();
+  const name = useAppSelector((state) => state.auth.user?.name);
+  const role = useAppSelector((state) => state.auth.user?.role);
   return (
     <div className="dark:bg-secondary-800/60 text-black bg-white-400 dark:text-white sticky top-0 border-b border-black/10">
       <div className="navbar flex justify-between items-center px-4 md:px-8 py-3 backdrop-blur-3xl">
@@ -21,7 +24,18 @@ function DashboardNavbar() {
         </div>
         <div className="ioncs flex gap-2">
           <DarkModeToggle />
-          <div className="circle w-10 h-10 rounded-full bg-red-50"></div>
+          <div className="flex items-center gap-2">
+            <h3
+              className={`  font-bold ${
+                role == "admin"
+                  ? "text-primary-400"
+                  : "dark:text-white text-black"
+              }`}
+            >
+              {name}
+            </h3>
+            <div className="circle w-10 h-10 rounded-full bg-red-50"></div>
+          </div>
         </div>
       </div>
     </div>

@@ -12,6 +12,8 @@ const About = lazy(() => import("./screens/About"));
 const Home = lazy(() => import("./screens/Home"));
 const DashboardHome = lazy(() => import("./screens/dashboard/DashboardHome"));
 const Categories = lazy(() => import("./screens/dashboard/Categories"));
+const Income = lazy(() => import("./screens/dashboard/Income"));
+const Expanse = lazy(() => import("./screens/dashboard/Expanse"));
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -53,6 +55,22 @@ export const router = createBrowserRouter(
           element={
             <Suspense fallback="Loading...">
               <Categories />
+            </Suspense>
+          }
+        />
+        <Route
+          path="income"
+          element={
+            <Suspense fallback="Loading...">
+              <Income />
+            </Suspense>
+          }
+        />
+        <Route
+          path="expanse"
+          element={
+            <Suspense fallback="Loading...">
+              <Expanse />
             </Suspense>
           }
         />

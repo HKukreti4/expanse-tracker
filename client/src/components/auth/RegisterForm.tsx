@@ -116,7 +116,7 @@ const RegisterForm = () => {
         </div>
         <Button
           type="submit"
-          className="bg-primary-500 rounded-md cursor-pointer"
+          className="bg-primary-500 rounded-md py-2 cursor-pointer"
         >
           {buttonLoading ? "Loading ..." : "Register"}
         </Button>
