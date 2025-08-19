@@ -205,13 +205,11 @@ export const getCategorywiseTransactions = asyncHandler(
   }
 );
 
-export const getRecentTransactionsCategoryWise = asyncHandler(
+export const getTotalTransactionsCategoryWise = asyncHandler(
   async (req: customReq, res: Response, next: NextFunction) => {
     const typearr = ["income", "expanse"];
     const type = req.params.type;
     if (!typearr.includes(type)) next(new errorHandler("Type is wrong", 401));
-    const limit = Number(req.query.limit) || 6;
-    const skip = Number(req.query.skip) || 0;
     if (!type) next(new errorHandler("Type is required", 401));
     const result = await Transaction.aggregate([
       {
@@ -219,6 +217,72 @@ export const getRecentTransactionsCategoryWise = asyncHandler(
           userId: req.user?._id,
           type: type,
         },
+      },
+      {
+        $group: {
+          _id: "$category",
+          total: { $sum: "$amount" },
+        },
+      },
+      {
+        $lookup: {
+          from: "categories", // ✅ actual collection name
+          localField: "_id",
+          foreignField: "_id",
+          as: "category",
+        },
+      },
+      {
+        $unwind: {
+          path: "$category",
+          preserveNullAndEmptyArrays: true, // if some tx doesn't have category
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          category: 1,
+          type: 1,
+          total: 1,
+        },
+      },
+      {
+        $sort: { date: -1 }, // optional: latest first
+      },
+    ]);
+
+    res.status(200).json({
+      success: true,
+      result,
+      message: "Successfully fetched the records",
+    });
+  }
+);
+
+export const getOneMonthTransactions = asyncHandler(
+  async (req: customReq, res: Response, next: NextFunction) => {
+    const type = req.query.type;
+    const now = new Date();
+    const last30days = new Date();
+    last30days.setDate(now.getDate() - 30);
+    let matchObj: {
+      userId: string;
+      type?: "income" | "expanse" | null;
+      date: any;
+    } = {
+      userId: req.user?._id,
+      date: { $gte: last30days, $lte: now },
+    };
+    if (type == "income") {
+      matchObj.type = "income";
+    } else if (type == "expanse") {
+      matchObj.type = "expanse";
+    } else {
+      matchObj;
+    }
+    const result = await Transaction.aggregate([
+      {
+        $match: matchObj,
       },
       {
         $lookup: {
@@ -245,12 +309,6 @@ export const getRecentTransactionsCategoryWise = asyncHandler(
       },
       {
         $sort: { date: -1 }, // optional: latest first
-      },
-      {
-        $skip: skip,
-      },
-      {
-        $limit: limit,
       },
     ]);
 
