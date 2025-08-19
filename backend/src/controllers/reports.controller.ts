@@ -204,3 +204,60 @@ export const getCategorywiseTransactions = asyncHandler(
     });
   }
 );
+
+export const getRecentTransactionsCategoryWise = asyncHandler(
+  async (req: customReq, res: Response, next: NextFunction) => {
+    const typearr = ["income", "expanse"];
+    const type = req.params.type;
+    if (!typearr.includes(type)) next(new errorHandler("Type is wrong", 401));
+    const limit = Number(req.query.limit) || 6;
+    const skip = Number(req.query.skip) || 0;
+    if (!type) next(new errorHandler("Type is required", 401));
+    const result = await Transaction.aggregate([
+      {
+        $match: {
+          userId: req.user?._id,
+          type: type,
+        },
+      },
+      {
+        $lookup: {
+          from: "categories", // ✅ actual collection name
+          localField: "category",
+          foreignField: "_id",
+          as: "category",
+        },
+      },
+      {
+        $unwind: {
+          path: "$category",
+          preserveNullAndEmptyArrays: true, // if some tx doesn't have category
+        },
+      },
+      {
+        $project: {
+          category: 1,
+          type: 1,
+          amount: 1,
+          icon: 1,
+          date: 1,
+        },
+      },
+      {
+        $sort: { date: -1 }, // optional: latest first
+      },
+      {
+        $skip: skip,
+      },
+      {
+        $limit: limit,
+      },
+    ]);
+
+    res.status(200).json({
+      success: true,
+      result,
+      message: "Successfully fetched the records",
+    });
+  }
+);

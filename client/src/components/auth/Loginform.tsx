@@ -79,14 +79,17 @@ const Loginform = () => {
             className="border-[1px] dark:border-white/20 border-black/10 bg-white dark:bg-transparent focus:border-primary-400 outline-none px-4 py-2 rounded-md"
           />
         </div>
-        <Button type="submit" className="bg-primary-500 rounded-md py-2">
+        <Button
+          type="submit"
+          className="bg-primary-500 text-white rounded-md py-2"
+        >
           Login
         </Button>
       </form>
       <div className="flex items-center gap-2">
-        <span className="flex-1 bg-white h-[0.5px]"></span>
+        <span className="flex-1 dark:bg-white bg-black h-[0.5px]"></span>
         <span>Or login with</span>
-        <span className="flex-1 bg-white h-[0.5px]"></span>
+        <span className="flex-1 dark:bg-white  bg-black h-[0.5px]"></span>
       </div>
       <button className="text-center cursor-pointer flex justify-center w-2/5 p-1 mx-auto items-center gap-2 rounded-2xl border-primary-400 border-[1px] ">
         <FcGoogle /> Google

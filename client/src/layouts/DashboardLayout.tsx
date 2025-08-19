@@ -53,7 +53,7 @@ const DashboardLayout = () => {
   }
 
   return (
-    <div className="flex dark:bg-black bg-white-400 dark:text-white text-black overflow-x-hidden">
+    <div className="flex dark:bg-black bg-white dark:text-white text-black overflow-x-hidden">
       {/* Sidebar */}
       <div
         className={`left w-62 lg:w-62 fixed ${

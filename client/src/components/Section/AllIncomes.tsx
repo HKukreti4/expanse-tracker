@@ -20,7 +20,10 @@ const AllIncomes = () => {
             const categoryObj =
               typeof item.category == "string" ? null : item.category;
             return (
-              <div key={item?._id} className=" mb-2  py-2 shadow rounded-xl">
+              <div
+                key={item?._id}
+                className=" mb-2  py-2 hover:shadow hover:bg-secondary-500 rounded-xl"
+              >
                 {typeof item.category == "string" ? (
                   item.category
                 ) : (
@@ -49,12 +52,12 @@ const AllIncomes = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="capitalize text-white/50 line-clamp-1 hidden md:block">
+                    <div className="capitalize dark:text-white/50  text-secondary-600 line-clamp-1 hidden md:block">
                       {item.note}
                     </div>
-                    <div className="flex gap-2  items-center  justify-end">
+                    <div className="flex gap-2  items-center justify-end">
                       <div className="dark:bg-secondary-800 bg-green-100 p-1 rounded-full text-green-600 flex items-center gap-2">
-                        <span>+ ₹ {item.amount} </span>
+                        <span>+ ₹ {item.amount.toLocaleString("en-In")} </span>
                         <span>
                           <TbTrendingUp />
                         </span>

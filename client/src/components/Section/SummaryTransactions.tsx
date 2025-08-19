@@ -5,7 +5,7 @@ import axiosInstance from "../../axiosInstance";
 import { useAppSelector } from "../../hooks/hooks";
 import { useEffect, useState } from "react";
 
-interface totalType1 {
+export interface totalType1 {
   income: number;
   expanse: number;
   balance: number;
@@ -27,9 +27,9 @@ const SummaryTransactions = () => {
   console.log(totals);
   return (
     <div className="mx-2 md:mx-8 my-4 grid grid-cols-3 gap-4">
-      <TotalBalance total={totals?.balance} />
-      <TotalIncome total={totals?.income} />
-      <TotalExpanse total={totals?.expanse} />
+      <TotalBalance total={totals} />
+      <TotalIncome total={totals} />
+      <TotalExpanse total={totals} />
     </div>
   );
 };

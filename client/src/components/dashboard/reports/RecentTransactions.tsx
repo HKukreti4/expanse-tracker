@@ -18,6 +18,7 @@ interface recentTransaction {
 
 const RecentTransactions = () => {
   const dispatch = useAppDispatch();
+
   const [data, setData] = useState<recentTransaction[] | null>([]);
   const token = useAppSelector((state) => state.auth.user?.token);
   const getTransaction = async () => {
@@ -32,7 +33,9 @@ const RecentTransactions = () => {
     getTransaction();
   }, [dispatch]);
   useEffect(() => {}, [data]);
-
+  if (data?.length == 0) {
+    return <h2 className="text-2xl">No record found</h2>;
+  }
   return (
     <div className="flex flex-col gap-2 dark:bg-secondary-500 p-2 bg-white shadow-md rounded-xl   order-1 md:order-2 ">
       <h3 className=" px-4 my-5  flex justify-between">
@@ -101,7 +104,7 @@ const RecentTransactions = () => {
           );
         })
       ) : (
-        <h2>No record found</h2>
+        <h2 className="">No record found</h2>
       )}
     </div>
   );

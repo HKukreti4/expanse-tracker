@@ -40,27 +40,44 @@ const CategoryWise = () => {
   //   "#00c94f",
   //   "#8884d8",
   // ];
-  // const customToolTip=
+  const customToolTip = ({ active, payload }: any) => {
+    if (active && payload && payload.length) {
+      const data = payload[0].payload;
+      return (
+        <div className="flex gap-2 dark:bg-black bg-white shadow-md rounded-xl p-5">
+          <span className="capitalize text-primary-400">
+            {data.category.category_name}:
+          </span>{" "}
+          <span className="text-green-400">
+            ₹ {data.amount.toLocaleString("en-in")}
+          </span>
+        </div>
+      );
+    }
+  };
+
+  if (data.length == 0) return null;
+
   return (
-    <div className="min-h-130 py-2  col-span-1 order-1 md:order-2 dark:bg-secondary-500 rounded-xl   bg-white shadow-md">
-      <h2 className="text-xl mb-4 text-primary-400  p-2 ">
+    <div className="min-h-120 py-2    order-1 md:order-2 dark:bg-secondary-500 rounded-xl   bg-white shadow-md">
+      <h2 className="text-xl my-4 text-primary-400  p-2 ">
         Transactions Category
       </h2>
-      <ResponsiveContainer width="100%" height="90%">
+      <ResponsiveContainer width="100%" height="80%">
         <PieChart>
           <Pie
             data={data}
             dataKey="amount"
             nameKey="category.category_name"
             fill="#0000"
-            innerRadius={isMobile ? 80 : 100}
-            outerRadius={isMobile ? 150 : 200}
+            innerRadius={isMobile ? 80 : 120}
+            outerRadius={isMobile ? 140 : 160}
           >
             {data?.map((_, index) => (
               <Cell key={`cell-${index}`} fill={getRandomColor()} />
             ))}
           </Pie>
-          <Tooltip />
+          <Tooltip content={customToolTip} />
           <Legend formatter={(value) => value.toUpperCase()} />
         </PieChart>
       </ResponsiveContainer>
