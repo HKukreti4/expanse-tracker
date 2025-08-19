@@ -49,6 +49,7 @@ const Categories = () => {
                     <div className="text-xl md:text-xl p-2  flex dark:bg-secondary-500 bg-primary-500 text-white dark:text-primary-500 md:justify-center md:items-center rounded-full">
                       {(() => {
                         const IconComp = getIconByName(item.icon);
+
                         return IconComp ? <IconComp /> : null;
                       })()}
                     </div>

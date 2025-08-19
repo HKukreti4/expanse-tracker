@@ -17,7 +17,7 @@ const PricingSection = () => {
               ₹0 <span className="text-xl text-white">per month</span>
             </h3>
             <p className="line-clamp-1">Great for trying our smart system</p>
-            <Button className="rounded-md cursor-pointer">
+            <Button className="rounded-md cursor-pointer py-2">
               Start for free
             </Button>
             <div className="fetures ">
@@ -61,7 +61,7 @@ const PricingSection = () => {
               ₹99 <span className="text-xl text-white">per month</span>
             </h3>
             <p className="line-clamp-1">Great for personal use and start ups</p>
-            <Button className="rounded-md cursor-pointer">
+            <Button className="rounded-md cursor-pointer py-2">
               Sign up with Standard
             </Button>
             <div className="fetures ">
@@ -107,7 +107,7 @@ const PricingSection = () => {
             <p className="line-clamp-1">
               Best for professionals and large teams
             </p>
-            <Button className="rounded-md cursor-pointer">
+            <Button className="rounded-md cursor-pointer py-2">
               Sign Up with Enterprise
             </Button>
             <div className="fetures ">

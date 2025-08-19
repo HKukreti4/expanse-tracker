@@ -6,11 +6,11 @@ import { useAppSelector } from "../../../hooks/hooks";
 
 function DashboardNavbar() {
   const dispatch = useDispatch();
-  const name = useAppSelector((state) => state.auth.user?.name);
-  const role = useAppSelector((state) => state.auth.user?.role);
+  const username = useAppSelector((state) => state.auth.user?.name) || "User";
+  const role = useAppSelector((state) => state.auth.user?.role) || "user";
   return (
-    <div className="dark:bg-secondary-800/60 text-black bg-white-400 dark:text-white sticky top-0 border-b border-black/10">
-      <div className="navbar flex justify-between items-center px-4 md:px-8 py-3 backdrop-blur-3xl">
+    <div className="dark:bg-secondary-800/60   rounded-3xl text-black bg-white  dark:text-white sticky top-0 border-b  border-black/10">
+      <div className="navbar flex justify-between items-center  px-4 md:px-8 py-3 backdrop-blur-3xl">
         <div className="search flex items-center gap-2 ">
           <MdMenu
             className="text-2xl lg:hidden cursor-pointer"
@@ -32,7 +32,7 @@ function DashboardNavbar() {
                   : "dark:text-white text-black"
               }`}
             >
-              {name}
+              {username}
             </h3>
             <div className="circle w-10 h-10 rounded-full bg-red-50"></div>
           </div>

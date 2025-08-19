@@ -1,4 +1,4 @@
-import { GiMeal, GiFruitBowl, GiPotato } from "react-icons/gi";
+import { GiMeal, GiFruitBowl, GiPotato, GiThreeFriends } from "react-icons/gi";
 import {
   FaShoppingBasket,
   FaPlane,
@@ -47,6 +47,7 @@ export const iconOptions: IconOption[] = [
   { label: "Fruits", value: "GiFruitBowl", icon: GiFruitBowl },
   { label: "Vegetables", value: "GiPotato", icon: GiPotato },
   { label: "Money", value: "FaRupeeSign", icon: FaRupeeSign },
+  { label: "Friends", value: "GiThreeFriends", icon: GiThreeFriends },
   { label: "Miscellaneous", value: "FaEllipsisH", icon: FaEllipsisH },
 ];
 
@@ -67,6 +68,7 @@ export const iconsMap: Record<string, IconType> = {
   GiMeal,
   GiFruitBowl,
   GiPotato,
+  GiThreeFriends,
   MdOutlineReceiptLong,
   MdMovie,
   FaRupeeSign,

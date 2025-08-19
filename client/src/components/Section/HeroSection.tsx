@@ -11,7 +11,7 @@ const HeroSection = () => {
             Expanse Management System
           </h2>
           <p className="text-md md:text-2xl text-gray-400">
-            Simplify your expanse management <br /> Powered with{" "}
+            Simplify your expanse management <br /> Powered with
             <span className="text-primary-400 font-bold"> AI</span>
           </p>
         </div>

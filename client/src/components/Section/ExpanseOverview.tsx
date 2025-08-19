@@ -1,35 +1,37 @@
 import { useEffect, useState } from "react";
 import Button from "../buttons/Button";
 import AddTransactionForm from "../forms/AddTransactionForm";
-
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-
 import OverviewGraphs from "../dashboard/graphs/OverviewGraphs";
 import { fetchMonthlyReport } from "../../redux/reports/reportThunk";
 import { setSelectedMonth } from "../../redux/reports/reportSlice";
 
-const IncomeOverview = () => {
+const ExpanseOverview = () => {
   const [showForm, setShowForm] = useState<boolean>(false);
 
   const selectedMonth = useAppSelector((state) => state.report.selectedMonth);
   const monthlyRecords = useAppSelector(
-    (state) => state.report.monthlyIncomeReport
+    (state) => state.report.monthlyExpenseReport
   );
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchMonthlyReport({ type: "income" }));
+    dispatch(fetchMonthlyReport({ type: "expanse" }));
   }, [selectedMonth]);
+
   return (
-    <div className="">
-      <div className="flex  items-center justify-between gap-4 shadow text-black dark:text-white bg-white/50 dark:bg-secondary-500 py-3 px-2 rounded-xl">
-        <div className="text-xl text-primary-400">
+    <div>
+      {/* Header */}
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4 shadow text-black dark:text-white bg-white/50 dark:bg-secondary-500 py-3 px-2 rounded-xl">
+        <div className="text-xl text-primary-400 text-center md:text-left">
           <h3 className="font-bold">Overview</h3>
           <p className="text-sm dark:text-white text-black">
             Track your earning over time and track your income trends
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-row  items-center gap-3">
+          {/* Month Selector */}
+
           <select
             value={selectedMonth}
             onChange={(e) => dispatch(setSelectedMonth(Number(e.target.value)))}
@@ -43,17 +45,19 @@ const IncomeOverview = () => {
               </option>
             ))}
           </select>
+
+          {/* Add Expense Button */}
           <Button
             className="rounded-xl cursor-pointer text-white py-1 px-4"
             onClick={() => setShowForm(true)}
           >
-            + Add Income
+            + <span className="hidden md:inline">Add Expanse</span>
           </Button>
         </div>
       </div>
 
       {monthlyRecords.length > 0 ? (
-        <div className="graph h-78 bg-white shadow-md dark:bg-secondary-500 mt-2 rounded-xl  p-4 ">
+        <div className="graph h-78 bg-white/50 dark:bg-secondary-500 mt-2 rounded-xl md:p-4 p-1 ">
           <OverviewGraphs data={monthlyRecords} />
         </div>
       ) : (
@@ -61,12 +65,12 @@ const IncomeOverview = () => {
           No data found for this month
         </h3>
       )}
-
+      {/* Add Transaction Form */}
       {showForm && (
-        <AddTransactionForm setshowForm={setShowForm} transaction="income" />
+        <AddTransactionForm setshowForm={setShowForm} transaction="expanse" />
       )}
     </div>
   );
 };
 
-export default IncomeOverview;
+export default ExpanseOverview;

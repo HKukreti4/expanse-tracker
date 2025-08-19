@@ -3,16 +3,15 @@ import asyncHandler from "../utils/asyncHandler";
 import errorHandler from "../utils/errorHandler";
 
 import { Category } from "../models/categoryModel";
-import { Types } from "mongoose";
+import mongoose, { Types } from "mongoose";
 import { Transaction } from "../models/transcationModel";
 import { customReq } from "./category.controller";
 
 //  Create a new transaction (income or expanse)
 export const createTransaction = asyncHandler(
   async (req: customReq, res: Response, next: NextFunction) => {
-    const { type, amount, category, date } = req.body;
+    const { type, amount, category, date, note } = req.body;
     const userId = req.user._id;
-
     if (!["income", "expanse"].includes(type)) {
       next(new errorHandler("Invalid transaction type", 400));
     }
@@ -23,10 +22,7 @@ export const createTransaction = asyncHandler(
 
     const isValidCategory = await Category.findOne({
       _id: category,
-      $or: [
-        { user_id: null }, // global
-        { user_id: userId }, // user's own
-      ],
+      $or: [{ user_id: null }, { user_id: userId }],
     });
 
     if (!isValidCategory) {
@@ -36,25 +32,72 @@ export const createTransaction = asyncHandler(
     const transaction = await Transaction.create({
       type,
       amount,
-      category: new Types.ObjectId(category),
-      date: new Date(date),
+      category: new mongoose.Types.ObjectId(category),
+      date,
       userId,
+      note,
     });
+    let fetchTransaction = await Transaction.findOne({
+      _id: transaction._id,
+    }).populate("category", "category_name icon");
+    if (!fetchTransaction) {
+      return next(
+        new errorHandler("Transaction not found after creation", 403)
+      );
+    }
 
-    res.status(201).json(transaction);
+    let transactionObj = fetchTransaction?.toObject();
+    (transactionObj as any).date = new Date(
+      transactionObj.date
+    ).toLocaleDateString("en-in");
+
+    res.status(201).json({
+      success: true,
+      message: "Succesfully added the transaction",
+      result: transactionObj,
+    });
   }
 );
 
 // @desc    Get all transactions for the logged-in user
-export const getTransactions = asyncHandler(
-  async (req: customReq, res: Response) => {
+export const getIncomeTransactions = asyncHandler(
+  async (req: customReq, res: Response, next: NextFunction) => {
     const userId = req.user._id;
 
-    const transactions = await Transaction.find({ userId })
-      .populate("category", "name icon") // optional: populating category info
+    const transactions = await Transaction.find({
+      $and: [{ userId: userId }, { type: "income" }],
+    })
+      .populate("category", "category_name icon")
       .sort({ date: -1 });
+    const formated = transactions.map((t) => ({
+      ...t.toObject(),
+      date: new Date(t.date).toLocaleDateString("en-IN"),
+    }));
+    res.status(201).json({
+      success: true,
+      message: "Succesfully fetched the transaction",
+      result: formated,
+    });
+  }
+);
+export const getExpanseTransactions = asyncHandler(
+  async (req: customReq, res: Response, next: NextFunction) => {
+    const userId = req.user._id;
 
-    res.json(transactions);
+    const transactions = await Transaction.find({
+      $and: [{ userId: userId }, { type: "expanse" }],
+    })
+      .populate("category", "category_name icon") // optional: populating category info
+      .sort({ date: -1 });
+    const formated = transactions.map((t) => ({
+      ...t.toObject(),
+      date: new Date(t.date).toLocaleDateString("en-IN"),
+    }));
+    res.status(201).json({
+      success: true,
+      message: "Succesfully fetched the transaction",
+      result: formated,
+    });
   }
 );
 
@@ -63,9 +106,9 @@ export const updateTransaction = asyncHandler(
   async (req: customReq, res: Response, next: NextFunction) => {
     const { id } = req.params;
     const userId = req.user._id;
-    const { type, amount, category, date } = req.body;
+    const { type, amount, category, date, note } = req.body;
 
-    const transaction = await Transaction.findOne({ _id: id, userId });
+    const transaction = await Transaction.findOne({ _id: id, userId: userId });
 
     if (!transaction) {
       return next(new errorHandler("Transaction not found", 404));
@@ -83,12 +126,39 @@ export const updateTransaction = asyncHandler(
 
       transaction.category = category;
     }
-
     transaction.type = type ?? transaction.type;
     transaction.amount = amount ?? transaction.amount;
     transaction.date = date ? new Date(date) : transaction.date;
+    transaction.note = note ? note : transaction.note;
 
     await transaction.save();
-    res.json(transaction);
+    res.status(201).json({
+      success: true,
+      message: "Succesfully updated the transaction",
+      result: transaction,
+    });
+  }
+);
+export const deleteTransaction = asyncHandler(
+  async (req: customReq, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+    const userId = req.user._id;
+
+    const transaction = await Transaction.findOneAndDelete({
+      _id: id,
+      userId: userId,
+    });
+
+    if (!transaction) {
+      return next(
+        new errorHandler("Transaction not found or already deleted", 404)
+      );
+    }
+
+    res.status(201).json({
+      success: true,
+      message: "Succesfully deleted the transaction",
+      result: transaction._id,
+    });
   }
 );

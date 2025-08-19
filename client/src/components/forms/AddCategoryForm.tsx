@@ -109,7 +109,7 @@ const AddCategoryForm = ({ setshowForm }: formprops) => {
               Select Icon
             </label>
             <div className="grid md:grid-cols-8 grid-cols-6 gap-4 h-20  md:h-auto overflow-y-auto">
-              {iconOptions.map((item) => {
+              {iconOptions?.map((item) => {
                 const Icon = item.icon;
                 return (
                   <div

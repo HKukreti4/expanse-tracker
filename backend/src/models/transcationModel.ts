@@ -25,6 +25,15 @@ const TransactionSchema = new Schema<ITransaction>(
   { timestamps: true }
 );
 
+TransactionSchema.pre("save", function () {
+  if (!this.date) {
+    const now = new Date();
+    const isOffSet = 5.5 * 60 * 60 * 1000;
+    const isDate = new Date(now.getTime() + isOffSet);
+    this.date = isDate;
+  }
+});
+
 export const Transaction = model<ITransaction>(
   "Transaction",
   TransactionSchema

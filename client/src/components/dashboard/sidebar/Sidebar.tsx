@@ -18,7 +18,7 @@ const Sidebar = () => {
   return (
     <div className="flex flex-col items-center justify-center  h-screen">
       <div className="log text-4xl items-center flex py-3 dark:bg-black-800/50 w-full md:justify-between lg:justify-center border-b dark:border-white/10 border-black/10 ">
-        <span className="flex flex-1 ">
+        <span className="flex flex-1 md:justify-center">
           <FcComboChart /> Expanse
         </span>
         <span className="text-md">

@@ -6,6 +6,7 @@ import { closeDashboard } from "../redux/slices/dashboardSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { useEffect, useState } from "react";
 import { getUserThunk } from "../redux/auth/authThunk";
+import { fetchCategories } from "../redux/category/categoryThunk";
 
 const DashboardLayout = () => {
   const dispatch = useAppDispatch();
@@ -37,6 +38,11 @@ const DashboardLayout = () => {
 
     verifyUser();
   }, []);
+  useEffect(() => {
+    if (!isVerifying) {
+      dispatch(fetchCategories());
+    }
+  }, [isVerifying]);
 
   if (isVerifying) {
     return (
@@ -47,7 +53,7 @@ const DashboardLayout = () => {
   }
 
   return (
-    <div className="flex dark:bg-black bg-white-400 dark:text-white text-black">
+    <div className="flex dark:bg-black bg-white-400 dark:text-white text-black overflow-x-hidden">
       {/* Sidebar */}
       <div
         className={`left w-62 lg:w-62 fixed ${

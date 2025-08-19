@@ -1,5 +1,13 @@
+import RecentSections from "../../components/Section/RecentSections";
+import SummaryTransactions from "../../components/Section/SummaryTransactions";
+
 const DashboardHome = () => {
-  return <h2>Main content</h2>;
+  return (
+    <>
+      <SummaryTransactions />
+      <RecentSections />
+    </>
+  );
 };
 
 export default DashboardHome;
