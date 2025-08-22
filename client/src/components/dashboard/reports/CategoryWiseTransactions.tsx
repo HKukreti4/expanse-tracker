@@ -34,14 +34,7 @@ const CategoryWiseTransactions = ({ type }: { type: string }) => {
   const getRandomColor = () => {
     return "#" + Math.floor(Math.random() * 16777215).toString(16);
   };
-  // let colors = [
-  //   "#8985D8",
-  //   "#95DADE",
-  //   "#f44236",
-  //   "#ffbb28",
-  //   "#00c94f",
-  //   "#8884d8",
-  // ];
+
   const customToolTip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
@@ -62,7 +55,7 @@ const CategoryWiseTransactions = ({ type }: { type: string }) => {
 
   return (
     <div className="min-h-120 py-2    order-1 md:order-2 dark:bg-secondary-500 rounded-xl   bg-white shadow-md">
-      <h2 className="text-xl my-4 text-primary-400  p-2 ">
+      <h2 className="text-xl my-4 text-primary-400 text-center md:text-left  p-2 ">
         Categorywise {type}
       </h2>
       <ResponsiveContainer width="100%" height="80%">
@@ -72,8 +65,6 @@ const CategoryWiseTransactions = ({ type }: { type: string }) => {
             dataKey="total"
             nameKey="category.category_name"
             fill="#0000"
-            // innerRadius={isMobile ? 20 : 20}
-            // outerRadius={isMobile ? 140 : 160}
           >
             {data?.map((_, index) => (
               <Cell key={`cell-${index}`} fill={getRandomColor()} />

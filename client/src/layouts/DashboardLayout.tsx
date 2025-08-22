@@ -67,7 +67,7 @@ const DashboardLayout = () => {
 
       {/* Main content */}
       <div
-        className="right flex-1 lg:ms-62 min-h-screen"
+        className="right flex-1 lg:ms-62 min-h-screen w-full md:w-[calc(100%-248px)]"
         onClick={() => {
           if (isSidebarVisible) {
             dispatch(closeDashboard());
@@ -75,7 +75,9 @@ const DashboardLayout = () => {
         }}
       >
         <DashboardNavbar />
-        <Outlet />
+        <div className="mt-20">
+          <Outlet />
+        </div>
       </div>
     </div>
   );

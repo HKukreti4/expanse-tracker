@@ -5,10 +5,16 @@ import axiosInstance from "../../axiosInstance";
 import toast from "react-hot-toast";
 import axios from "axios";
 
+export interface PaginationType {
+  totalPages: number;
+  totalRecords: number;
+  currentPage: number;
+}
 export interface responseType {
   success: boolean;
   message: string;
   result: transactionDataType;
+  pagination: PaginationType;
 }
 
 export const createTransaction = createAsyncThunk<
@@ -40,16 +46,24 @@ export const createTransaction = createAsyncThunk<
     return rejectWithValue("Something went wrong");
   }
 });
+
+export interface responseForType {
+  data: transactionDataType[];
+  pagination: PaginationType;
+}
+
 export const getAllIncomeTransactions = createAsyncThunk<
-  transactionDataType[], // ✅ Return type: created
+  responseForType, // ✅ Return type: created
   void, // ✅ Argument type
   { rejectValue: string }
 >("transaction/income", async (_, { getState, rejectWithValue }) => {
   try {
     const state = getState() as RootState;
     const token = state?.auth?.user?.token;
+    const page = state?.transactions.pagination.currentPage || 1;
 
     const response = await axiosInstance.get("/transaction/income", {
+      params: { page: page },
       headers: {
         Authorization: `bearer ${token}`,
       },
@@ -57,7 +71,7 @@ export const getAllIncomeTransactions = createAsyncThunk<
     if (!response.data.result) {
       return rejectWithValue("Category not found");
     }
-    return response.data.result as transactionDataType[];
+    return { data: response.data.result, pagination: response.data.pagination };
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const msg = error?.response?.data?.message;
@@ -69,15 +83,16 @@ export const getAllIncomeTransactions = createAsyncThunk<
   }
 });
 export const getAllExpanseTransactions = createAsyncThunk<
-  transactionDataType[], // ✅ Return type: created
+  responseForType, // ✅ Return type: created
   void, // ✅ Argument type
   { rejectValue: string }
 >("transaction/expanses", async (_, { getState, rejectWithValue }) => {
   try {
     const state = getState() as RootState;
     const token = state?.auth?.user?.token;
-
-    const response = await axiosInstance.get("/transaction/expanse", {
+    const page = state?.transactions.pagination.currentPage || 1;
+    const response = await axiosInstance.get("/transaction/expense", {
+      params: { page: page },
       headers: {
         Authorization: `bearer ${token}`,
       },
@@ -85,7 +100,7 @@ export const getAllExpanseTransactions = createAsyncThunk<
     if (!response.data.result) {
       return rejectWithValue("Category not found");
     }
-    return response.data.result as transactionDataType[];
+    return { data: response.data.result, pagination: response.data.pagination };
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const msg = error?.response?.data?.message;

@@ -34,7 +34,7 @@ const RecentTransactions = () => {
   }, [dispatch]);
   useEffect(() => {}, [data]);
   if (data?.length == 0) {
-    return <h2 className="text-2xl">No record found</h2>;
+    return null;
   }
   return (
     <div className="flex flex-col gap-2 dark:bg-secondary-500 p-2 bg-white shadow-md rounded-xl   order-1 md:order-2 ">
@@ -46,7 +46,8 @@ const RecentTransactions = () => {
           See All
         </button>
       </h3>
-      {data && data?.length > 0 ? (
+      {data &&
+        data?.length > 0 &&
         data?.map((item) => {
           const categoryObj =
             typeof item.category == "string" ? null : item.category;
@@ -79,7 +80,7 @@ const RecentTransactions = () => {
                       </div>
                     </div>
                   </div>
-                  {item.type == "expanse" ? (
+                  {item.type == "expense" ? (
                     <div className="flex gap-2 items-center  w-35 justify-end">
                       <div className="dark:bg-secondary-800 bg-red-100 p-1 rounded-full text-red-600 flex items-center gap-2">
                         <span>- ₹ {item.amount} </span>
@@ -102,10 +103,7 @@ const RecentTransactions = () => {
               )}
             </div>
           );
-        })
-      ) : (
-        <h2 className="">No record found</h2>
-      )}
+        })}
     </div>
   );
 };

@@ -11,10 +11,10 @@ const DarkModeToggle = () => {
     dispatch(setDefaultTheme());
   }, [theme, dispatch]);
   return (
-    <div className="flex items-center spacstatee-x-4">
+    <div className="flex items-center spacstatee-x-4 ">
       <button
         onClick={() => dispatch(toggleTheme())}
-        className={`relative w-12 h-6 bg-gray-300 dark:bg-gray-700 rounded-full transition-colors
+        className={` cursor-pointer relative w-12 h-6 bg-gray-300 dark:bg-gray-700 rounded-full transition-colors
             ${theme == "dark" ? "justify-end" : "justify-start"} 
           flex items-center p-1`}
       >

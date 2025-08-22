@@ -1,25 +1,21 @@
 import { FcComboChart } from "react-icons/fc";
-import { MdAddBox, MdClose, MdDashboard, MdLogout } from "react-icons/md";
-import { NavLink, useNavigate } from "react-router-dom";
+import { MdAddBox, MdClose, MdDashboard } from "react-icons/md";
+import { NavLink } from "react-router-dom";
 import LiwithSubmenu from "../../buttons/LiwithSubmenu";
 import { closeDashboard } from "../../../redux/slices/dashboardSlice";
 import { FaArrowTrendDown, FaArrowTrendUp } from "react-icons/fa6";
 import { TbCategoryPlus } from "react-icons/tb";
-import Button from "../../buttons/Button";
+
 import { useAppDispatch } from "../../../hooks/hooks";
-import { logoutUser } from "../../../redux/auth/authSlice";
+
 const Sidebar = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const handleLogut = async () => {
-    await dispatch(logoutUser());
-    navigate("/login");
-  };
+
   return (
     <div className="flex flex-col items-center justify-center  h-screen">
       <div className="log text-4xl items-center flex py-3 dark:bg-black-800/50 w-full md:justify-between lg:justify-center border-b dark:border-white/10 border-black/10 ">
         <span className="flex flex-1 md:justify-center">
-          <FcComboChart /> Expanse
+          <FcComboChart /> Expense
         </span>
         <span className="text-md">
           <MdClose
@@ -77,19 +73,13 @@ const Sidebar = () => {
                 icon: <FaArrowTrendUp className="text-green-400" />,
               },
               {
-                submenu: "Expanse",
-                slug: "/expanse",
+                submenu: "expense",
+                slug: "/expense",
                 icon: <FaArrowTrendDown className=" text-red-400" />,
               },
             ]}
           />
         </ul>
-        <Button
-          className=" rounded-xl mb-2 mx-2 py-3 px-4 bg-white dark:text-primary-400 hover:text-white  text-primary-400 dark:bg-secondary-500 hover:bg-primary-500 cursor-pointer text-left flex items-center gap-1"
-          onClick={() => handleLogut()}
-        >
-          <MdLogout /> Logout
-        </Button>
       </div>
     </div>
   );

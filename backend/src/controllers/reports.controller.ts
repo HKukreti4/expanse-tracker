@@ -6,7 +6,7 @@ import { customReq } from "./category.controller";
 
 interface GetQueryMonth {
   month?: string;
-  type?: "expanse" | "income";
+  type?: "expense " | "income";
 }
 interface customreqWithparams extends Request<{}, {}, {}, GetQueryMonth> {
   user: {
@@ -22,7 +22,7 @@ export const getMonthlyReport = asyncHandler(
       ? parseInt(req.query.month)
       : new Date().getMonth() + 1;
     const type = req.query.type;
-    const validType = ["income", "expanse"];
+    const validType = ["income", "expense"];
     if (!type) {
       return next(new errorHandler("Type is required", 401));
     }
@@ -91,9 +91,9 @@ export const getTotals = asyncHandler(
               $cond: [{ $eq: ["$_id", "income"] }, "$total", 0],
             },
           },
-          expanse: {
+          expense: {
             $sum: {
-              $cond: [{ $eq: ["$_id", "expanse"] }, "$total", 0],
+              $cond: [{ $eq: ["$_id", "expense"] }, "$total", 0],
             },
           },
         },
@@ -101,14 +101,14 @@ export const getTotals = asyncHandler(
 
       {
         $addFields: {
-          balance: { $subtract: ["$income", "$expanse"] },
+          balance: { $subtract: ["$income", "$expense"] },
         },
       },
       {
         $project: {
           _id: 0,
           income: 1,
-          expanse: 1,
+          expense: 1,
           balance: 1,
         },
       },
@@ -207,7 +207,7 @@ export const getCategorywiseTransactions = asyncHandler(
 
 export const getTotalTransactionsCategoryWise = asyncHandler(
   async (req: customReq, res: Response, next: NextFunction) => {
-    const typearr = ["income", "expanse"];
+    const typearr = ["income", "expense"];
     const type = req.params.type;
     if (!typearr.includes(type)) next(new errorHandler("Type is wrong", 401));
     if (!type) next(new errorHandler("Type is required", 401));
@@ -267,7 +267,7 @@ export const getOneMonthTransactions = asyncHandler(
     last30days.setDate(now.getDate() - 30);
     let matchObj: {
       userId: string;
-      type?: "income" | "expanse" | null;
+      type?: "income" | "expense" | null;
       date: any;
     } = {
       userId: req.user?._id,
@@ -275,11 +275,12 @@ export const getOneMonthTransactions = asyncHandler(
     };
     if (type == "income") {
       matchObj.type = "income";
-    } else if (type == "expanse") {
-      matchObj.type = "expanse";
+    } else if (type == "expense") {
+      matchObj.type = "expense";
     } else {
       matchObj;
     }
+    console.log(matchObj);
     const result = await Transaction.aggregate([
       {
         $match: matchObj,
@@ -311,7 +312,7 @@ export const getOneMonthTransactions = asyncHandler(
         $sort: { date: -1 }, // optional: latest first
       },
     ]);
-
+    console.log(result);
     res.status(200).json({
       success: true,
       result,

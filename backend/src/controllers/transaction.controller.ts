@@ -7,12 +7,12 @@ import mongoose, { Types } from "mongoose";
 import { Transaction } from "../models/transcationModel";
 import { customReq } from "./category.controller";
 
-//  Create a new transaction (income or expanse)
+//  Create a new transaction (income or expense )
 export const createTransaction = asyncHandler(
   async (req: customReq, res: Response, next: NextFunction) => {
     const { type, amount, category, date, note } = req.body;
     const userId = req.user._id;
-    if (!["income", "expanse"].includes(type)) {
+    if (!["income", "expense"].includes(type)) {
       next(new errorHandler("Invalid transaction type", 400));
     }
 
@@ -64,39 +64,118 @@ export const getIncomeTransactions = asyncHandler(
   async (req: customReq, res: Response, next: NextFunction) => {
     const userId = req.user._id;
 
-    const transactions = await Transaction.find({
-      $and: [{ userId: userId }, { type: "income" }],
-    })
-      .populate("category", "category_name icon")
-      .sort({ date: -1 });
-    const formated = transactions.map((t) => ({
-      ...t.toObject(),
+    let page = Number(req.query.page) || 1;
+
+    let limitPerPage = Number(req.params.limit) || 10;
+    let skip = (page - 1) * limitPerPage;
+
+    const [result] = await Transaction.aggregate([
+      {
+        $match: { userId: userId, type: "income" },
+      },
+      {
+        $facet: {
+          data: [
+            {
+              $lookup: {
+                from: "categories", // ✅ collection name
+                localField: "category",
+                foreignField: "_id",
+                as: "category",
+              },
+            },
+            {
+              $unwind: {
+                path: "$category",
+                preserveNullAndEmptyArrays: true,
+              },
+            },
+            { $sort: { date: -1 } },
+            { $skip: skip },
+            { $limit: limitPerPage },
+          ],
+          totalCount: [{ $count: "count" }],
+        },
+      },
+    ]);
+
+    const transactions = result?.data || [];
+    const total = result?.totalCount[0]?.count || 0;
+
+    // format dates
+    const formatted = transactions.map((t: any) => ({
+      ...t,
       date: new Date(t.date).toLocaleDateString("en-IN"),
     }));
-    res.status(201).json({
+
+    res.status(200).json({
       success: true,
-      message: "Succesfully fetched the transaction",
-      result: formated,
+      message: "Successfully fetched transactions",
+      result: formatted,
+      pagination: {
+        totalRecords: total,
+        currentPage: page,
+        totalPages: Math.ceil(total / limitPerPage),
+      },
     });
   }
 );
+
 export const getExpanseTransactions = asyncHandler(
   async (req: customReq, res: Response, next: NextFunction) => {
     const userId = req.user._id;
+    let page = Number(req.query.page) || 1;
+    let limitPerPage = Number(req.params.limit) || 10;
+    let skip = (page - 1) * limitPerPage;
 
-    const transactions = await Transaction.find({
-      $and: [{ userId: userId }, { type: "expanse" }],
-    })
-      .populate("category", "category_name icon") // optional: populating category info
-      .sort({ date: -1 });
-    const formated = transactions.map((t) => ({
-      ...t.toObject(),
+    const [result] = await Transaction.aggregate([
+      {
+        $match: { userId: userId, type: "expense" },
+      },
+      {
+        $facet: {
+          data: [
+            {
+              $lookup: {
+                from: "categories", // ✅ collection name
+                localField: "category",
+                foreignField: "_id",
+                as: "category",
+              },
+            },
+            {
+              $unwind: {
+                path: "$category",
+                preserveNullAndEmptyArrays: true,
+              },
+            },
+            { $sort: { date: -1 } },
+            { $skip: skip },
+            { $limit: limitPerPage },
+          ],
+          totalCount: [{ $count: "count" }],
+        },
+      },
+    ]);
+
+    const transactions = result?.data || [];
+    const total = result?.totalCount[0]?.count || 0;
+
+    // format dates
+    const formatted = transactions.map((t: any) => ({
+      ...t,
       date: new Date(t.date).toLocaleDateString("en-IN"),
     }));
-    res.status(201).json({
+
+    res.status(200).json({
       success: true,
-      message: "Succesfully fetched the transaction",
-      result: formated,
+      message: "Successfully fetched transactions",
+      result: formatted,
+      pagination: {
+        totalRecords: total,
+        currentPage: page,
+        totalPages: Math.ceil(total / limitPerPage),
+      },
     });
   }
 );

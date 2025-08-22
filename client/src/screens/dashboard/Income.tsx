@@ -10,6 +10,7 @@ const Income = () => {
   useEffect(() => {
     dispatch(getAllIncomeTransactions());
   }, []);
+  useEffect(() => {}, [dispatch]);
   return (
     <div className="md:mx-8 mx-2 mt-3">
       <IncomeOverview />

@@ -16,6 +16,7 @@ const Loginform = () => {
     password: "",
   });
   const errorMsg = useAppSelector((state) => state.auth.errmsg);
+  const loading = useAppSelector((state) => state.auth.buttonLoading);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const submitHandler = async (e: FormEvent) => {
@@ -79,12 +80,21 @@ const Loginform = () => {
             className="border-[1px] dark:border-white/20 border-black/10 bg-white dark:bg-transparent focus:border-primary-400 outline-none px-4 py-2 rounded-md"
           />
         </div>
-        <Button
-          type="submit"
-          className="bg-primary-500 text-white rounded-md py-2"
-        >
-          Login
-        </Button>
+        {loading ? (
+          <Button
+            type="button"
+            className="bg-primary-500 cursor-not-allowed text-white rounded-md py-2"
+          >
+            Loading ...
+          </Button>
+        ) : (
+          <Button
+            type="submit"
+            className="bg-primary-500 text-white rounded-md py-2"
+          >
+            Login
+          </Button>
+        )}
       </form>
       <div className="flex items-center gap-2">
         <span className="flex-1 dark:bg-white bg-black h-[0.5px]"></span>

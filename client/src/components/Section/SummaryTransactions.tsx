@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 export interface totalType1 {
   income: number;
-  expanse: number;
+  expense: number;
   balance: number;
 }
 const SummaryTransactions = () => {

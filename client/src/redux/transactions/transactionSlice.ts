@@ -7,28 +7,48 @@ import {
   deleteTransactionsIncome,
   getAllExpanseTransactions,
   getAllIncomeTransactions,
+  type responseForType,
 } from "./transactionthunk";
 
 interface initialObject {
   transactions: transactionDataType[];
   income: transactionDataType[];
-  expanses: transactionDataType[];
+  expenses: transactionDataType[];
   loading: boolean;
   error: string;
+  pagination: {
+    totalRecords: number;
+    currentPage: number;
+    totalPages: number;
+  };
 }
 
 const initialState: initialObject = {
   income: [],
-  expanses: [],
+  expenses: [],
   transactions: [],
   loading: true,
   error: "",
+  pagination: {
+    totalRecords: 0,
+    currentPage: 1,
+    totalPages: 0,
+  },
 };
 
 const transactionSlice = createSlice({
   name: "transactions",
   initialState,
-  reducers: {},
+  reducers: {
+    nextPage(state) {
+      if (state.pagination.currentPage == state.pagination.totalPages) return;
+      state.pagination.currentPage = state.pagination.currentPage + 1;
+    },
+    prevPage(state) {
+      if (state.pagination.currentPage == 1) return;
+      state.pagination.currentPage = state.pagination.currentPage - 1;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(createTransaction.pending, (state) => {
@@ -41,12 +61,12 @@ const transactionSlice = createSlice({
           // Append the new transactions to the existing list
           state.transactions = [
             ...state.income,
-            ...state.expanses,
+            ...state.expenses,
             action.payload,
           ];
           action.payload.type == "income"
             ? (state.income = [...state.income, action.payload])
-            : (state.expanses = [...state.expanses, action.payload]);
+            : (state.expenses = [...state.expenses, action.payload]);
         }
       )
       .addCase(createTransaction.rejected, (state, action) => {
@@ -59,12 +79,11 @@ const transactionSlice = createSlice({
       })
       .addCase(
         getAllIncomeTransactions.fulfilled,
-        (state, action: PayloadAction<transactionDataType[]>) => {
+        (state, action: PayloadAction<responseForType>) => {
           state.loading = false;
-          // Append the new transactions to the existing list
-          state.transactions = [...state.income, ...state.expanses];
-
-          state.income = action.payload;
+          state.transactions = [...state.income, ...state.expenses];
+          state.income = action.payload.data;
+          state.pagination = action.payload.pagination;
         }
       )
       .addCase(getAllIncomeTransactions.rejected, (state, action) => {
@@ -77,12 +96,12 @@ const transactionSlice = createSlice({
       })
       .addCase(
         getAllExpanseTransactions.fulfilled,
-        (state, action: PayloadAction<transactionDataType[]>) => {
+        (state, action: PayloadAction<responseForType>) => {
           state.loading = false;
           // Append the new transactions to the existing list
-          state.transactions = [...state.income, ...state.expanses];
-
-          state.expanses = action.payload;
+          state.transactions = [...state.income, ...state.expenses];
+          state.expenses = action.payload.data;
+          state.pagination = action.payload.pagination;
         }
       )
       .addCase(getAllExpanseTransactions.rejected, (state, action) => {
@@ -97,10 +116,10 @@ const transactionSlice = createSlice({
         deleteTransactions.fulfilled,
         (state, action: PayloadAction<string>) => {
           state.loading = false;
-          state.expanses = state.expanses.filter(
+          state.expenses = state.expenses.filter(
             (item) => item._id !== action.payload
           );
-          state.transactions = [...state.income, ...state.expanses];
+          state.transactions = [...state.income, ...state.expenses];
         }
       )
       .addCase(deleteTransactions.rejected, (state, action) => {
@@ -118,7 +137,7 @@ const transactionSlice = createSlice({
           state.income = state.income.filter(
             (item) => item._id !== action.payload
           );
-          state.transactions = [...state.income, ...state.expanses];
+          state.transactions = [...state.income, ...state.expenses];
         }
       )
       .addCase(deleteTransactionsIncome.rejected, (state, action) => {
@@ -128,4 +147,5 @@ const transactionSlice = createSlice({
   },
 });
 
+export const { nextPage, prevPage } = transactionSlice.actions;
 export default transactionSlice.reducer;

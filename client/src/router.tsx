@@ -67,7 +67,7 @@ export const router = createBrowserRouter(
           }
         />
         <Route
-          path="expanse"
+          path="expense"
           element={
             <Suspense fallback="Loading...">
               <Expanse />

@@ -20,7 +20,7 @@ type GraphProps = {
 const colors = ["#D08700", "#f1cf54"];
 const OverviewGraphs = ({ data }: GraphProps) => {
   return (
-    <ResponsiveContainer height="100%" className="w-auto">
+    <ResponsiveContainer height="100%" className="w-auto ">
       <BarChart data={data}>
         <CartesianGrid />
         <XAxis dataKey="date" className="capitalize" />
@@ -31,7 +31,6 @@ const OverviewGraphs = ({ data }: GraphProps) => {
           dataKey="totalAmount"
           fill="#D08700"
           name="Amount"
-          barSize="20%"
           radius={[10, 10, 0, 0]}
         >
           {data.map((_, index) => (

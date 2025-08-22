@@ -17,7 +17,7 @@ interface categoryType {
 }
 type formprops = {
   setshowForm: React.Dispatch<React.SetStateAction<boolean>>;
-  transaction: "income" | "expanse";
+  transaction: "income" | "expense";
 };
 export interface transactionDataType {
   _id?: string;
@@ -25,7 +25,7 @@ export interface transactionDataType {
   note: string | undefined;
   date: string | Date | undefined | null;
   category: categoryType | undefined | string;
-  type: "income" | "expanse";
+  type: "income" | "expense";
 }
 
 const AddTransactionForm = ({ setshowForm, transaction }: formprops) => {

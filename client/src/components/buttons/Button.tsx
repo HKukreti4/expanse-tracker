@@ -17,7 +17,7 @@ const Button = ({
   return (
     <button
       type={type}
-      className={`${className} bg-primary-500 cursor-pointer   `}
+      className={`${className} bg-primary-500 `}
       {...props}
       onClick={onClick}
     >

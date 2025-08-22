@@ -59,8 +59,8 @@ const CategoryWise = () => {
   if (data.length == 0) return null;
 
   return (
-    <div className="min-h-120 py-2    order-1 md:order-2 dark:bg-secondary-500 rounded-xl   bg-white shadow-md">
-      <h2 className="text-xl my-4 text-primary-400  p-2 ">
+    <div className="min-h-140 py-2   order-1 md:order-2 dark:bg-secondary-500 rounded-xl   bg-white shadow-md">
+      <h2 className="text-xl my-4 text-primary-400  text-center md:text-left p-2 ">
         Transactions Category
       </h2>
       <ResponsiveContainer width="100%" height="80%">

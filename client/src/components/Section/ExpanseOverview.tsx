@@ -16,7 +16,7 @@ const ExpanseOverview = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchMonthlyReport({ type: "expanse" }));
+    dispatch(fetchMonthlyReport({ type: "expense" }));
   }, [selectedMonth]);
 
   return (
@@ -67,7 +67,7 @@ const ExpanseOverview = () => {
       )}
       {/* Add Transaction Form */}
       {showForm && (
-        <AddTransactionForm setshowForm={setShowForm} transaction="expanse" />
+        <AddTransactionForm setshowForm={setShowForm} transaction="expense" />
       )}
     </div>
   );

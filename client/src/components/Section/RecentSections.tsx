@@ -11,8 +11,8 @@ const RecentSections = () => {
         <CategoryWise />
         <CategoryWiseTransactions type="income" />
         <GetMonthlyTransactions type="income" />
-        <GetMonthlyTransactions type="expanse" />
-        <CategoryWiseTransactions type="expanse" />
+        <GetMonthlyTransactions type="expense" />
+        <CategoryWiseTransactions type="expense" />
       </div>
     </div>
   );

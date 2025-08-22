@@ -2,7 +2,7 @@
 import { Schema, model, Document, Types } from "mongoose";
 
 export interface ITransaction extends Document {
-  type: "income" | "expanse";
+  type: "income" | "expense ";
   amount: number;
   category: Types.ObjectId;
   date: Date;
@@ -12,7 +12,7 @@ export interface ITransaction extends Document {
 
 const TransactionSchema = new Schema<ITransaction>(
   {
-    type: { type: String, enum: ["income", "expanse"], required: true },
+    type: { type: String, enum: ["income", "expense"], required: true },
     amount: { type: Number, required: true },
     category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
     date: { type: Date, required: true },
