@@ -9,7 +9,7 @@ import {
 import { useEffect } from "react";
 import { fetchMonthlyReport } from "../../redux/reports/reportThunk";
 import { nextPage, prevPage } from "../../redux/transactions/transactionSlice";
-import { BiArrowBack, BiCaretLeft, BiCaretRight } from "react-icons/bi";
+import { BiCaretLeft, BiCaretRight } from "react-icons/bi";
 const AllExpanses = () => {
   const expenses = useAppSelector((state) => state.transactions.expenses);
   const dispatch = useAppDispatch();
