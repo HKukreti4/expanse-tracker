@@ -1,5 +1,10 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import { getUserThunk, loginUserThunk, registerUserThunk } from "./authThunk";
+import {
+  getUserThunk,
+  loginUserThunk,
+  registerUserThunk,
+  updateUserThunk,
+} from "./authThunk";
 
 // Define user structure returned from the API
 export interface User {
@@ -7,6 +12,7 @@ export interface User {
   name: string;
   email: string;
   token?: string;
+  avatar?: string;
   role?: "admin" | "user";
 
   // Add more fields if your API returns them
@@ -97,6 +103,21 @@ const authSlice = createSlice({
       }
     );
     builder.addCase(getUserThunk.rejected, (state, action) => {
+      state.errmsg = (action.payload as string) || "Invalid user";
+    });
+    builder.addCase(updateUserThunk.pending, (state) => {
+      state.buttonLoading = true;
+    });
+    builder.addCase(
+      updateUserThunk.fulfilled,
+      (state, action: PayloadAction<User>) => {
+        state.buttonLoading = false;
+        state.user = action.payload;
+        const userData = action.payload;
+        sessionStorage.setItem("user", JSON.stringify(userData));
+      }
+    );
+    builder.addCase(updateUserThunk.rejected, (state, action) => {
       state.errmsg = (action.payload as string) || "Invalid user";
     });
   },

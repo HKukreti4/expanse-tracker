@@ -150,8 +150,50 @@ export const verifyUser = asyncHandler(
         email: user.email,
         role: user.role,
         name: user.name,
+        avatar: user.avatar,
       },
       token,
+    });
+  }
+);
+
+export const updateUser = asyncHandler(
+  async (req: customReq, res: Response): Promise<void> => {
+    const userId = req.user._id;
+    const { name, contact } = req.body;
+
+    const updateData: Record<string, any> = {};
+    if (name) updateData.name = name;
+    if (contact) updateData.contact = contact;
+
+    if (req.file) {
+      const avatarUrl = `${req.protocol}://${req.get("host")}/public/avatars/${
+        req.file.filename
+      }`;
+      updateData.avatar = avatarUrl;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $set: updateData },
+      { new: true }
+    );
+    if (!updatedUser) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+
+    res.status(200).json({
+      message: "User updated successfully",
+      success: true,
+      user: {
+        id: updatedUser._id,
+        email: updatedUser.email,
+        role: updatedUser.role,
+        name: updatedUser.name,
+        avatar: updatedUser.avatar,
+      },
+      token: req.token,
     });
   }
 );

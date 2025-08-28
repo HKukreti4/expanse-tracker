@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 import { isAxiosError } from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-type formprops = {
+export type formprops = {
   setshowForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 

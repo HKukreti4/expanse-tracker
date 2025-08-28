@@ -280,7 +280,7 @@ export const getOneMonthTransactions = asyncHandler(
     } else {
       matchObj;
     }
-    console.log(matchObj);
+
     const result = await Transaction.aggregate([
       {
         $match: matchObj,
@@ -312,7 +312,7 @@ export const getOneMonthTransactions = asyncHandler(
         $sort: { date: -1 }, // optional: latest first
       },
     ]);
-    console.log(result);
+
     res.status(200).json({
       success: true,
       result,

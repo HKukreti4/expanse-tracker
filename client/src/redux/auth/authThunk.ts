@@ -1,6 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../axiosInstance";
 import axios from "axios";
+import type { RootState } from "../store/store";
+import toast from "react-hot-toast";
 
 // Define input and output types
 interface RegisterPayload {
@@ -8,6 +10,7 @@ interface RegisterPayload {
   email: string;
   password: string;
 }
+
 interface loginPayload {
   email: string;
   password: string;
@@ -17,6 +20,7 @@ interface User {
   id: string;
   name: string;
   email: string;
+  avatar: string;
   role: "admin" | "user";
 }
 interface getInfoData {
@@ -104,5 +108,38 @@ export const getUserThunk = createAsyncThunk<
       return rejectWithValue(msg || "Failed to get user");
     }
     return rejectWithValue("something went wrong");
+  }
+});
+
+export const updateUserThunk = createAsyncThunk<
+  User, // ✅ Return type (what you return from the thunk)
+  FormData, // ✅ Argument type (what you pass into the thunk)
+  {
+    rejectValue: string; // ✅ rejectWithValue type
+  }
+>("user/update", async (userData, { getState, rejectWithValue }) => {
+  try {
+    const state = getState() as RootState;
+    const token = state?.auth?.user?.token;
+    console.log("update token", token);
+    const result = await axiosInstance.put<RegisterResponse>(
+      "/auth/user/update",
+      userData,
+      {
+        headers: {
+          "Content-Type": "mulptipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const payload = { ...result.data.user, token: result.data.token };
+    toast.success("Succesfully Updated");
+    return payload;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const msg = error?.response?.data?.message;
+      return rejectWithValue(msg || "Failed to register");
+    }
+    return rejectWithValue("Failed to register");
   }
 });

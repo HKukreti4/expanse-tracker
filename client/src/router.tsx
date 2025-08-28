@@ -6,6 +6,7 @@ import {
 import { Suspense, lazy } from "react";
 
 import { RootLayout, DashboardLayout, Auth } from "./index";
+import UserProfile from "./screens/dashboard/UserProfile";
 
 // Lazy-loaded screens
 const About = lazy(() => import("./screens/About"));
@@ -71,6 +72,14 @@ export const router = createBrowserRouter(
           element={
             <Suspense fallback="Loading...">
               <Expanse />
+            </Suspense>
+          }
+        />
+        <Route
+          path="profile"
+          element={
+            <Suspense fallback="Loading...">
+              <UserProfile />
             </Suspense>
           }
         />

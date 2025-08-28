@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import Button from "../buttons/Button";
 import AddTransactionForm from "../forms/AddTransactionForm";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-import OverviewGraphs from "../dashboard/graphs/OverviewGraphs";
+
 import { fetchMonthlyReport } from "../../redux/reports/reportThunk";
 import { setSelectedMonth } from "../../redux/reports/reportSlice";
+import OverviewLineGraphs from "../dashboard/graphs/OverviewLineGraph";
 
 const ExpanseOverview = () => {
   const [showForm, setShowForm] = useState<boolean>(false);
@@ -58,7 +59,7 @@ const ExpanseOverview = () => {
 
       {monthlyRecords.length > 0 ? (
         <div className="graph h-78 bg-white/50 dark:bg-secondary-500 mt-2 rounded-xl md:p-4 p-1 ">
-          <OverviewGraphs data={monthlyRecords} />
+          <OverviewLineGraphs data={monthlyRecords} />
         </div>
       ) : (
         <h3 className="mt-4 md:text-3xl text-xl">

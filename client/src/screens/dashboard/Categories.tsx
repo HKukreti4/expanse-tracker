@@ -20,7 +20,7 @@ const Categories = () => {
   useEffect(() => {
     dispatch(fetchCategories());
   }, []);
-  useEffect(() => {}, [categories]);
+  useEffect(() => {}, [categories, userId]);
   const deleteCategoryById = async (id: string) => {
     await dispatch(deleteCategory(id));
   };

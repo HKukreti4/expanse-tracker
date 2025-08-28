@@ -21,9 +21,9 @@
   -moz-osx-font-smoothing: grayscale;
   --color-primary-400: #fdc601;
   --color-primary-500: #d18701;
-  --color-secondary-500: rgba(255, 255, 255, 0.062);
-  --color-secondary-600: rgba(47, 47, 47, 0.933);
-  --color-secondary-800: rgba(32, 32, 32, 0.727);
+  --color-secondary-500: rgb(17, 17, 17);
+  --color-secondary-600: rgb(10, 9, 9);
+  --color-secondary-800: rgb(33, 33, 33);
   --color-white: rgb(255, 255, 255);
   --color-white-400: rgb(230, 230, 230);
   --color-black: black;
